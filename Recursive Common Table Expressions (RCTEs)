@@ -1,0 +1,17 @@
+-- Recursive Common Table Expressions (RCTEs):
+-- Description: RCTEs allow you to perform hierarchical queries and traverse tree-like structures within your data. They are particularly useful for scenarios like:
+-- Organizational hierarchies: Finding all employees reporting to a manager, traversing up the entire chain of command.
+-- Graph traversal: Identifying paths or connections in complex relationships.
+-- Example:
+WITH RECURSIVE employee_hierarchy AS (
+    SELECT employee_id, manager_id, employee_name
+    FROM employees
+    WHERE employee_id = 12345 -- Starting point (e.g., CEO)
+
+    UNION ALL
+
+    SELECT e.employee_id, e.manager_id, e.employee_name
+    FROM employees e
+    INNER JOIN employee_hierarchy eh ON e.manager_id = eh.employee_id
+)
+SELECT * FROM employee_hierarchy;
